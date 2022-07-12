@@ -105,10 +105,10 @@ const init = async()=> {
   try {
     await conn.sync({ force: true });
     const [moe, larry, lucy, ethyl] = await Promise.all(
-      ['moe', 'larry', 'lucy', 'ethyl'].map( name => User.create({ name }))
+      ['Moe', 'Larry', 'Lucy', 'Ethyl'].map( name => User.create({ name }))
     );
     const [foo, bar, bazz, quq, fizz] = await Promise.all(
-      ['foo', 'bar', 'bazz', 'quq', 'fizz'].map( name => Thing.create({ name }))
+      ['Foo', 'Bar', 'Bazz', 'Quq', 'Fizz'].map( name => Thing.create({ name }))
     );
 
     foo.userId = moe.id;
