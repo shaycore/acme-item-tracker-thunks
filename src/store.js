@@ -2,6 +2,8 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import axios from 'axios';
+import { faker } from '@faker-js/faker';
+
 
 const initialState = {
   view: window.location.hash.slice(1),
@@ -19,6 +21,9 @@ const viewReducer = (state =window.location.hash.slice(1), action)=> {
 const usersReducer = (state = [], action)=> { 
   if(action.type === 'DELETE_USER'){
     return state.filter(user => user.id !== action.user.id )
+  }
+  if(action.type === 'UPDATE_USER'){
+    return state.map(user => user.id !== action.user.id ? user : action.user);
   }
   if(action.type === 'SET_USERS'){
     return action.users;
@@ -57,16 +62,40 @@ const updateThing = (thing)=> {
     dispatch({ type: 'UPDATE_THING', thing });
   };
 };
+const createThing = (thing)=> {
+  return async(dispatch)=> {
+    const thing = (await axios.post('/api/things', { name: faker.commerce.product()})).data;
+    dispatch({ type: 'CREATE_THING', thing });
+  };
+};
 const deleteThing = (thing)=> {
   return async(dispatch)=> {
     await axios.delete(`/api/things/${thing.id}`);
     dispatch({ type: 'DELETE_THING', thing });
   };
 };
+const updateUser = (user)=> {
+  return async(dispatch)=> {
+    user = (await axios.put(`/api/users/${user.id}`, user)).data;
+    dispatch({ type: 'UPDATE_USER', user });
+  };
+};
+const createUser = (user)=> {
+  return async(dispatch)=> {
+    user = (await axios.post('/api/users', { name: faker.name.firstName()} )).data;
+    dispatch({ type: 'CREATE_USER', user });
+  };
+};
+const deleteUser = (user) => {
+  return async(dispatch)=> {
+    await axios.delete(`/api/users/${user.id}`);
+    dispatch({ type: 'DELETE_USER', user});
+  };
+};
 
 const store = createStore(reducer, applyMiddleware(logger, thunk));
 
-export { deleteThing, updateThing };
+export { deleteThing, updateThing, createUser, deleteUser, createThing, updateUser };
 
 export default store;
 
