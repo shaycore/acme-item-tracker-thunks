@@ -127,13 +127,17 @@ const init = async()=> {
     );
 
     foo.userId = moe.id;
-    bar.userId = lucy.id
-    bazz.userId = lucy.id
+    bar.userId = lucy.id;
+    bazz.userId = lucy.id;
+    lucy.ranking = '8';
+    fizz.ranking = '3';
 
     await Promise.all([
       foo.save(),
       bar.save(),
-      bazz.save()
+      bazz.save(),
+      lucy.save(),
+      fizz.save()
     ]);
   }
   catch(ex){
