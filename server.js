@@ -91,6 +91,21 @@ app.put('/api/users/:id', async(req, res, next)=> {
   }
 });
 
+//I didn't use this route (tried using a route for my first solution to limiting to 3) but I used front end code instead
+app.get('/api/users/:id/things', async(req, res, next)=> {
+  try {
+    const things = await Thing.findAll({
+      where: {
+        userId: req.params.id
+      }
+    });
+    res.send(things);
+  }
+  catch(ex){
+    next(ex);
+  }
+});
+
 app.use((err, req, res, next)=> {
   console.log(err);
   res.status(500).send(err);

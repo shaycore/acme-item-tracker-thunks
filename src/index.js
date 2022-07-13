@@ -45,7 +45,6 @@ class _App extends Component{
   }
 }
 
-
 const mapDispatch = (dispatch)=> {
   return {
     setView: (view)=> {
